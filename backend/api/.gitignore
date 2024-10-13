@@ -1,0 +1,19 @@
+.venv
+.env
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+# Local configuration file (replace this with your actual config file if needed)
+instance/
+*.wsgi
+
+# IDE specific files
+.vscode/
+file/
+
+dist/
+build/

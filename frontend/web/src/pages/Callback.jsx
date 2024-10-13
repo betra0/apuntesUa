@@ -10,11 +10,13 @@ const Callback = () => {
 
         if (code) {
             // Enviar el código a tu API
-            fetch('http://localhost:5000/api/auth/google', {
+            fetch('http://localhost:5000/auth/google', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    
                 },
+                credentials: 'include',
                 body: JSON.stringify({ code }),
             })
             .then(response => response.json())
