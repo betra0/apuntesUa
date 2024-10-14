@@ -1,5 +1,6 @@
 .venv
 .env
+app.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
