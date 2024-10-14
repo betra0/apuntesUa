@@ -22,3 +22,12 @@ class Config:
     }
     rutalog = os.getenv('RUTA_LOG')
     rutatesisfile = os.getenv('RUTA_TESIS_FILE')
+
+def getconfig_bd():
+        return {
+            'host': os.getenv('DB_HOST', 'localhost'),
+            'user': os.getenv('DB_USER', 'dany'),
+            'port': os.getenv('DB_PORT', 3306),
+            'password': os.getenv('DB_PASSWORD', '12345'),
+            'database':os.getenv('DB', 'ua_apuntes'),
+            }

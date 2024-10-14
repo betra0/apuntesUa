@@ -3,3 +3,4 @@ shortuuid
 Flask
 requests 
 Flask-Cors==5.0.0
+mysql-connector-python
