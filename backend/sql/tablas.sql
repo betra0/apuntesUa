@@ -22,15 +22,12 @@ CREATE TABLE users (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
 
 CREATE TABLE user_sessions (
-    session_id VARCHAR(50) NOT NULL UNIQUE,     -- Unique session id
+    refresh_token VARCHAR(36) NOT NULL UNIQUE,  -- Usando UUID como refresh token
     user_id VARCHAR(30) NOT NULL,               -- Foreign key referencing the users table
-    refresh_token TEXT NOT NULL,                -- Refresh token for the session
     user_agent VARCHAR(255),                    -- User agent information ( for tracking devices/browsers)
     ip_address VARCHAR(45),                     -- IP address of the session ( useful for security)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  -- Token creation date
     expires_at TIMESTAMP,                       -- Expiration date of the refresh token
-    PRIMARY KEY (session_id),
+    PRIMARY KEY (refresh_token),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE  -- Reference to the users table
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8;
-
-

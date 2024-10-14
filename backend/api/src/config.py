@@ -13,7 +13,8 @@ class Config:
     googleClientSecret=os.getenv('GOOGLE_CLIENT_SECRET')
     redirectUri=os.getenv('REDIRECT_URI')
     
-    tokenExpirationDays = int(os.getenv('TOKEN_EXPIRATION_DAYS', 30))
+    accessExpirationHours = float(os.getenv('TOKEN_EXPIRATION_HOURS', 2))
+    refreshExpirationDays = float(os.getenv('TOKEN_EXPIRATION_DAYS', 180))
     SECRET_KEY = os.getenv('SECRET_KEY', 'default_secret')
     email_log = os.getenv('EMAIL_LOG', 'False').lower() == 'true'  # Convertir a booleano
     email = {
