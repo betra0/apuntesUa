@@ -1,6 +1,6 @@
 import jwt
 from functools import wraps
-from flask import request, jsonify
+from flask import request, jsonify, g
 import datetime
 from datetime import datetime, timedelta, UTC
 import traceback
@@ -20,12 +20,18 @@ class SecurityToken():
         token = jwt.encode(payload, Config.SECRET_KEY, algorithm='HS256')
         return token
     
-    
     @classmethod
-    def token_required(self, f):
+    def accessToken_required(self, f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            token = request.cookies.get('auth_token')
+            # Obtener el encabezado Authorization
+            auth_header = request.headers.get('Authorization')
+            # Verificar si el encabezado está presente y comienza con 'Bearer '
+            if not auth_header or not auth_header.startswith('Bearer '):
+                return jsonify({'message': 'Token faltante o formato incorrecto!'}), 401
+            
+            # Extraer el token removiendo el prefijo 'Bearer '
+            token = auth_header.split(" ")[1]
 
             if not token: 
                 return jsonify({'message': 'no hay token!',
@@ -43,7 +49,11 @@ class SecurityToken():
                 if user == None:
                     return jsonify({'message': ' Usuario no valido!',
                                 'active': -1}), 401
-                return f(user, *args, **kwargs)
+                
+                # Aquí almacenamos el usuario en el contexto global `g`
+                g.currentUser = user
+                return f(*args, **kwargs)
+                
             except jwt.ExpiredSignatureError:   
                 return jsonify({'message': 'Token has expired!',
                                 'active': 0}), 401

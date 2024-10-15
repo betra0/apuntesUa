@@ -1,6 +1,6 @@
 from database.db import MySQLConnectionManager
 from utils.logger import Logger
-#from models.entities.user import User
+from models.entities.user_session import UserSession
 #from models.entities.user_session import UserSession
 
 class ModelSession():
@@ -32,3 +32,33 @@ class ModelSession():
          
          finally:
              cls.db.close_connection(conexion)
+             
+    @classmethod
+    def get_by_token(cls, token):
+        connection = cls.db.create_connection()
+        cursor = connection.cursor(dictionary=True)
+        try:
+            sql = """
+            
+            SELECT  
+            refresh_token, user_id, user_agent, ip_address, created_at, expires_at
+            FROM user_sessions
+            WHERE refresh_token = %s"""
+
+            cursor.execute(sql, (token,))
+            res = cursor.fetchone()
+            if res is not None:
+                    return UserSession(
+                        refresh_token=res['refresh_token'],                             
+                        user_id=res['user_id'],                             
+                        user_agent=res['user_agent'],                             
+                        ip_address=res['ip_address'],                                                          
+                        created_at=res['created_at'],                             
+                        expires_at=res['expires_at'],                             
+                    )
+            else:
+                return None
+        except Exception as ex:
+            raise Exception(ex)
+        finally:
+            cls.db.close_connection(connection)

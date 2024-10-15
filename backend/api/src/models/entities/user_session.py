@@ -1,5 +1,5 @@
 from werkzeug.security import check_password_hash, generate_password_hash
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 class UserSession:
@@ -27,6 +27,20 @@ class UserSession:
             'created_at': self.created_at,
             'expires_at': self.expires_at
         }
+    def is_expired(self):
+        """
+        Verifica si la sesión ha expirado comparando la fecha de expiración con la fecha actual en UTC.
+        """
+        if self.expires_at is None:
+            # Si expires_at no está definido, asumimos que no tiene expiración.
+            return False
+        
+        current_time = datetime.now(timezone.utc)
+
+        if self.expires_at.tzinfo is None:
+            self.expires_at = self.expires_at.replace(tzinfo=timezone.utc)
+
+        return current_time > self.expires_at
     @classmethod
     def generateToken(self):
         return str(uuid.uuid4())
