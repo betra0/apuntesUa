@@ -1,11 +1,12 @@
+import { GOOGLE_AUTH_URL, GOOGLE_CLIENT_ID, SELF_URL } from "../config";
 
 
 const Login = () => {
     const handleLogin = () => {
-        const clientId = '906886970042-l37hcas7vmq788m8b8340orakvmrrlcn.apps.googleusercontent.com'; // Reemplaza con tu Client ID
-        const redirectUri = 'http://localhost:5173/callback'; // Debe coincidir con tu configuración de Google
+        const clientId = GOOGLE_CLIENT_ID; 
+        const redirectUri = `${SELF_URL}/callback`; 
         const scope = 'profile email openid';
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline&prompt=consent`;
+        const authUrl = `${GOOGLE_AUTH_URL}?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}&access_type=offline&prompt=consent`;
 
 
         window.location.href = authUrl; // Redirige al usuario a Google para iniciar sesión

@@ -1,31 +1,40 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import sendAuthGoogleCode from '../services/authGoogle';
+import { useNavigate } from 'react-router-dom';
+import { saveAccessToken } from '../utils/accessTokenStorage';
 
-const Callback = () => {
+
+function Callback(){
+
+    const handlerAuth = async(code)=>{
+        try{
+            const res =  await sendAuthGoogleCode(code)
+
+            if(res){
+                console.log(res)
+                saveAccessToken(res.access_token)
+                navigate('/')
+            }
+        }catch(e){
+            console.error(e)
+        }
+        
+    }
+    const isPlay = useRef(false)
+    const navigate= useNavigate()
     useEffect(() => {
         // Capturar el código de la URL
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code'); // Obtienes el código de la URL
         console.log('este es el codigo', code)
 
-        if (code) {
+        if (code && isPlay.current===false) {
             // Enviar el código a tu API
-            fetch('http://localhost:5000/auth/google', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    
-                },
-                credentials: 'include',
-                body: JSON.stringify({ code }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data); // Manejar los tokens devueltos
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            isPlay.current=true
+            handlerAuth(code)
+            
+            
         }
     }, []);
 
