@@ -1,14 +1,17 @@
 
 import { createContext, useState, useContext, useEffect, useRef} from "react";
-import { findAccessToken } from "../utils/accessTokenStorage";
+import { findAccessToken, removeAccessToken } from "../utils/accessTokenStorage";
 import authforAccess from "../services/authForAccess";
 import sessionExpiredError from "../utils/customErrors";
+import logoutApi from "../services/logoutApi";
+import { useLocation } from 'react-router-dom';
 
 
 const userContext = createContext();
 
 
 export const UserContextProvider = ({ children }) => {
+  const location = useLocation();
     const [user, setUser] = useState(null);
     const isRunning = useRef(false)
     const [loading, setLoading] = useState(true)
@@ -40,7 +43,7 @@ export const UserContextProvider = ({ children }) => {
         }
 
       }
-      if(!isRunning.current){
+      if(!isRunning.current && location.pathname !== '/callback'){
         fetchData()
       }
 
@@ -62,11 +65,18 @@ export const UserContextProvider = ({ children }) => {
       setLoading(true)
       setError(null)
       setTriger(!triger)
+    }
+    const logout =async()=>{
+      const res =await logoutApi()
+      if (res){
+        removeAccessToken()
+        goToAuth()
+      }
 
     }
   
     return (
-      <userContext.Provider value={{ user, loading, error, changeUser, goToAuth, refreshSession }}>
+      <userContext.Provider value={{ user, loading, error, changeUser, goToAuth, refreshSession, logout }}>
         {children}
       </userContext.Provider>
     );

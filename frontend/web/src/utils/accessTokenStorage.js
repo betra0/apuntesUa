@@ -11,3 +11,6 @@ export const findAccessToken = () => {
       console.error('El token debe ser un string');
     }
   };
+  export const removeAccessToken = () => {
+    sessionStorage.removeItem('access');
+};

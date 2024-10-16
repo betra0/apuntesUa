@@ -2,9 +2,9 @@ import { useUserContext } from "../context/userContext";
 
 
 export default function HomePage(){
-  const { user, loading, error, changeUser, goToAuth, refreshSession } = useUserContext();
+  const { user, loading, error, changeUser, goToAuth, refreshSession, logout} = useUserContext();
     const handleExit = (e) => {
-        goToAuth()
+        logout()
     };
 
     return (
@@ -14,7 +14,7 @@ export default function HomePage(){
                 <h4>Bienvenido {user.fullName}</h4>
 
                 <span>Correo: {user.email}</span>
-                <img src={user.profilePicture} alt="Logo Usuario"  class=" bg-blue-500 rounded-full"/>
+                <img src={user.profilePicture} alt="Logo Usuario"  className=" bg-blue-500 rounded-full"/>
             </div>
             <button onClick={handleExit} >Cerrar sesíon</button>
 

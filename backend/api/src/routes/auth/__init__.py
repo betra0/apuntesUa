@@ -19,3 +19,9 @@ authRoutes.register_blueprint(tokenRoute, url_prefix='/token')
 @Security.accessToken_required
 def Raiz():
     return jsonify({'user':g.currentUser.getdict()})
+
+@authRoutes.route('/logout')
+def logout():
+    resp = jsonify({'success':True})
+    resp.set_cookie('refresh_token', '', expires=0, httponly=True)
+    return resp
