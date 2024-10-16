@@ -3,6 +3,7 @@ import { Routes, Route, Outlet, useNavigate, Navigate  } from 'react-router-dom'
 import Login from './pages/Login';
 import Callback from './pages/Callback';
 import { useUserContext } from './context/userContext';
+import HomePage from './pages/Home';
 
 
 
@@ -15,7 +16,7 @@ function App() {
               <Route path="/" element={
                 loading ? <h3>Cargando...</h3> 
                   : error ? <h3>Ocurrio un error</h3>
-                    :user ? <h3>Pagina de inicio</h3>:
+                    :user ? <HomePage></HomePage>:
                 <Login />
               } />
               <Route path="/callback" element={<Callback/>} />

@@ -13,7 +13,7 @@ const Login = () => {
     };
 
     return (
-        <div>
+        <div className="flex flex-col items-center gap-3">
             <h1>Inicio de Sesión con Google</h1>
             <button onClick={handleLogin}>Iniciar Sesión con Google</button>
         </div>
