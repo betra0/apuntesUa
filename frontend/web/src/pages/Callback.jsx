@@ -21,6 +21,9 @@ function Callback(){
             }
         }catch(e){
             console.error(e)
+            refreshSession()
+            navigate('/')
+
         }
         
     }
@@ -36,8 +39,10 @@ function Callback(){
             // Enviar el código a tu API
             isPlay.current=true
             handlerAuth(code)
-            
-            
+        }
+        else if(!code && isPlay.current===false){
+            refreshSession()
+            navigate('/')
         }
     }, []);
 

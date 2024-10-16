@@ -17,17 +17,14 @@ export default async function sendAuthGoogleCode(code){
         if (response.ok && json.data.user && json.data.access_token) {
 
             return {user: formatUser(json.data.user), access_token:json.data.access_token}
-        }else if(response.status === 401){
-            return false 
         }else{
-            console.log(json)
-            console.error(`Error ${response.status}: Ocurrió un error en la solicitud`);
-            throw new Error(' Error Desconocido');
+            throw new Error(`Error ${response.status}: Ocurrió un error en la solicitud, ${json}`);
         }
 
 
 
     } catch (error) {
         console.error('Error:', error);
+        throw error
     }
 };
