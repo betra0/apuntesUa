@@ -1,4 +1,4 @@
-export function formatUserData(userData) {
+export function formatUser(userData){
     return {
         id: userData.id || null,
         email: userData.email || null,

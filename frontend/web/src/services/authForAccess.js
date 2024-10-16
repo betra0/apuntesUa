@@ -1,5 +1,5 @@
 import { API_URL } from "../config";
-import { formatUserData } from "../models/user";
+import { formatUser } from "../models/user";
 import { findAccessToken } from "../utils/accessTokenStorage";
 import { ApiError } from "../utils/customErrors";
 import newAccessTokenManager from "./newAccessToken";
@@ -28,7 +28,7 @@ export default async function authforAccess({repeat=false, signal=null, code=nul
         const json = await response.json();
         if (response.ok) {
 
-            return formatUserData(json.user)
+            return formatUser(json.user)
             
         }else if(response.status === 401){
             if(!repeat){
