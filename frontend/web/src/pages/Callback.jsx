@@ -3,9 +3,11 @@ import React, { useEffect, useRef } from 'react';
 import sendAuthGoogleCode from '../services/authGoogle';
 import { useNavigate } from 'react-router-dom';
 import { saveAccessToken } from '../utils/accessTokenStorage';
+import { useUserContext } from '../context/userContext';
 
 
 function Callback(){
+  const { user, loading, error, changeUser, goToAuth, refreshSession } = useUserContext();
 
     const handlerAuth = async(code)=>{
         try{
@@ -14,6 +16,7 @@ function Callback(){
             if(res){
                 console.log(res)
                 saveAccessToken(res.access_token)
+                changeUser(res.user)
                 navigate('/')
             }
         }catch(e){
